@@ -33,16 +33,6 @@ async function main() {
     await db.insert(catsTable).values(cat1);
     await db.insert(catsTable).values(cat2);
 
-    console.log('Querying cats');
-
-
-    // test connection to database
-    // const client = await pool.connect();
-    // console.log('Connected to database');
-
-    // console.log('Querying cats');
-    // const usersCount = await db.$count(users);
-    // console.log('Users count:', usersCount);
 }
 
 main();

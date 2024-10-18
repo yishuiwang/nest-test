@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, NotFoundException, Param, Post, Put } from '@nestjs/common';
 import { CatsService } from './cats.service'; // 导入 CatsService
 import { DatabaseService } from '../db/database.service';
 
@@ -20,9 +20,23 @@ export class CatsController {
     return await this.catsService.findAll();
   }
 
-  @Get('test-db')
-  async testDatabase() {
-    const isConnected = await this.databaseService.testConnection();
-    return { isConnected };
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const cat = await this.catsService.findOne(+id);
+    if (!cat) {
+      throw new NotFoundException('找不到该猫咪');
+    }
+    return cat;
   }
+
+
+  @Delete(':id')
+  async remove(@Param('id') id: string) {
+    const deletedCat = await this.catsService.remove(+id);
+    if (!deletedCat) {
+      throw new NotFoundException('找不到该猫咪');
+    }
+    return { message: '猫咪删除成功', cat: deletedCat };
+  }
+
 }
